@@ -147,8 +147,8 @@ export default {
       输入验证码之后，点击登录实现跳转
     */
     handlogin () {
-      const mobile = this.mobile
-      const code = this.code
+      const mobile = this.form.mobile
+      const code = this.form.code
       axios({
         method: 'POST',
         url: 'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
@@ -157,7 +157,7 @@ export default {
           code
         }
       }).then((res) => {
-        // console.log(res)
+        console.log(res)
         // 弹出成功提醒
         this.$message({
           message: '恭喜你，登陆成功',
@@ -166,6 +166,8 @@ export default {
         this.$router.push({
           name: 'home'
         })
+        const data = res.data.data
+        window.localStorage.setItem('user_message', JSON.stringify(data))
       }).catch(() => {
         this.$message.error('登录失败，手机号或者验证码错误')
       })

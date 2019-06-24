@@ -6,9 +6,21 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      name: 'home',
+      name: 'layout',
       path: '/',
-      component: () => import('@/views/home')
+      component: () => import('@/views/layout'),
+      children: [
+        {
+          name: 'home',
+          path: '',
+          component: () => import('@/views/home')
+        },
+        {
+          name: 'publish',
+          path: '/publish',
+          component: () => import('@/views/publish')
+        }
+      ]
     },
     {
       name: 'login',
@@ -17,3 +29,6 @@ export default new Router({
     }
   ]
 })
+/**
+  当跳转成功后调到layout页面
+ */
