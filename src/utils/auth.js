@@ -1,5 +1,6 @@
 const localStorage = window.localStorage
 const USER_KEY = 'user_message'
+
 export function getUser () {
   return JSON.parse(localStorage.getItem(USER_KEY))
 }
