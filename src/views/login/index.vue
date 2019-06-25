@@ -40,7 +40,7 @@ export default {
   data () {
     return {
       form: {
-        mobile: '',
+        mobile: '18035404256',
         code: '',
         agree: ''
       },
@@ -110,7 +110,7 @@ export default {
                     seccode: result.geetest_seccode
                   }
                 }).then((res) => {
-                  console.log(res.data)
+                  // console.log(res.data)
                   // 发送短信成功后开启倒计时
                   this.djs()
                 })
@@ -157,7 +157,10 @@ export default {
           code
         }
       }).then((res) => {
-        console.log(res)
+        // 当本地存储写在跳转页面之后，当跳转home页时，本地存储值为null，且访问的不是登录页，所以跳转到登录页，因为此时就在登录页面，所以点击登录之后不会跳转页面，再点击一次才会跳转
+        const data = res.data.data
+        window.localStorage.setItem('user_message', JSON.stringify(data))
+        // console.log(res)
         // 弹出成功提醒
         this.$message({
           message: '恭喜你，登陆成功',
@@ -166,8 +169,6 @@ export default {
         this.$router.push({
           name: 'home'
         })
-        const data = res.data.data
-        window.localStorage.setItem('user_message', JSON.stringify(data))
       }).catch(() => {
         this.$message.error('登录失败，手机号或者验证码错误')
       })
