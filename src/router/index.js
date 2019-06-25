@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import nprogress from 'nprogress'
+import { getUser } from '@/utils/auth'
+
 Vue.use(Router)
 
 const router = new Router({
@@ -34,7 +36,8 @@ router.beforeEach((to, from, next) => {
   // 开启进度条
   nprogress.start()
   // 获取登录状态
-  const user = window.localStorage.getItem('user_message')
+  // const user = window.localStorage.getItem('user_message')
+  const user = getUser()
   if (to.path === '/login') {
     // 去的是登录页
     if (user) {
