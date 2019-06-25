@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { getUser, removeUser } from '@/utils/auth'
 export default {
   name: 'AppHead',
   data () {
@@ -26,7 +27,7 @@ export default {
     }
   },
   created () {
-    this.user = JSON.parse(window.localStorage.getItem('user_message'))
+    this.user = getUser()
   },
   methods: {
     tchu () {
@@ -37,8 +38,8 @@ export default {
         type: 'warning'
       }).then(() => {
         //  清除登录信息
-        alert(1)
-        window.localStorage.removeItem('user_message')
+        // window.localStorage.removeItem('user_message')
+        removeUser()
         // 跳转页面
         this.$router.push({
           name: 'login'

@@ -34,6 +34,7 @@
 <script>
 import axios from 'axios'
 import '@/vendor/gt'
+import { setUser } from '@/utils/auth'
 const timerSeconds = 60
 export default {
   name: 'Applogin',
@@ -159,7 +160,8 @@ export default {
       }).then((res) => {
         // 当本地存储写在跳转页面之后，当跳转home页时，本地存储值为null，且访问的不是登录页，所以跳转到登录页，因为此时就在登录页面，所以点击登录之后不会跳转页面，再点击一次才会跳转
         const data = res.data.data
-        window.localStorage.setItem('user_message', JSON.stringify(data))
+        // window.localStorage.setItem('user_message', JSON.stringify(data))
+        setUser(data)
         // console.log(res)
         // 弹出成功提醒
         this.$message({
