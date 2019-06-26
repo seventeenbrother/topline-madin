@@ -74,8 +74,20 @@ export default {
     }
   },
   created () {
+    this.loadArtical()
   },
   methods: {
+    // 请求文章数量
+    async loadArtical () {
+      /**
+     * 除了登录接口，我们在访问其他接口时，必须在请求头中设置一个Authorization字段提供用户的token，token是用户在登陆成功后后台生成放置在用户信息中
+     */
+      const articles = await this.$http({
+        url: '/articles',
+        method: 'GET'
+      })
+      console.log(articles)
+    }
   }
 }
 </script>

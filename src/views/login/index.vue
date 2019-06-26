@@ -79,11 +79,10 @@ export default {
       try {
         const mobile = this.form.mobile
         // 请求人机交互初始化参数
-        const csh = await this.$http({
+        const data = await this.$http({
           method: 'GET',
           url: `/captchas/${mobile}`
         })
-        const data = csh.data.data
         const captchaObj = await initGeetest({
           // 以下配置参数来自服务端 SDK
           gt: data.gt,
@@ -146,9 +145,8 @@ export default {
           data: this.form
         })
         // data为登陆成功后的返回值
-        const data = userInfo.data.data
         // 当本地存储写在跳转页面之后，当跳转home页时，本地存储值为null，且访问的不是登录页，所以跳转到登录页，因为此时就在登录页面，所以点击登录之后不会跳转页面，再点击一次才会跳转
-        setUser(data)
+        setUser(userInfo)
         // window.localStorage.setItem('user_message', JSON.stringify(data))
         // console.log(res)
         // 弹出成功提醒
