@@ -6,7 +6,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './styles/index.less'
 import 'nprogress/nprogress.css'
 import axios from 'axios'
-import { getUser } from '@/utils/auth'
+import { getUser, removeUser } from '@/utils/auth'
 
 // 引入axios为了配置axios的基础路径，并且将axios挂在到Vue的prototype中
 // 配置基础路径
@@ -37,6 +37,13 @@ axios.interceptors.response.use(response => {
   }
 }, function (error) {
   // 对请求的错误做一些处理
+  // 如果状态吗为401，表示发送请求携带的token没有授权，所以要跳转到登陆页，并删除该用户
+  if (error.response.status === 401) {
+    removeUser()
+    router.push({
+      name: '/login'
+    })
+  }
   return Promise.reject(error)
 })
 
