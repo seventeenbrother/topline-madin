@@ -9,7 +9,7 @@ import axios from 'axios'
 
 // 引入axios为了配置axios的基础路径，并且将axios挂在到Vue的prototype中
 // 配置基础路径
-axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0/'
+axios.defaults.baseURL = 'http://toutiao.course.itcast.cn/mp/v1_0/'
 // 将axios挂在到Vue的prototype中
 Vue.prototype.$http = axios
 

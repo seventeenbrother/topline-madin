@@ -37,7 +37,7 @@ export default {
     height: 100%;
   }
   .el-header {
-    // background-color: red;
+    background-color: #ccc;
     line-height: 60px;
   }
   .el-aside {
