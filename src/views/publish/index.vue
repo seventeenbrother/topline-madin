@@ -5,7 +5,7 @@
       <el-button style="float: right; padding: 3px 0" type="text" @click='handlePublish(false)'>发布</el-button>
       <el-button style="float: right; padding: 3px 0" type="text" @click='handlePublish(true)'>存入草稿</el-button>
     </div>
-    <el-col :span='10'>
+    <el-col :span='16'>
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="标题">
         <el-input v-model="form.title"></el-input>
@@ -22,18 +22,30 @@
        <article-channel v-model='form.channel_id'></article-channel>
       </el-form-item>
       <el-form-item label="内容">
-        <el-input type="textarea" v-model="form.content"></el-input>
-      </el-form-item>
-    </el-form>
+        <!-- 富文本编辑器 -->
+          <quill-editor v-model="form.content"
+                  ref="myQuillEditor"
+                  :options="editorOption"
+                  >
+          </quill-editor>
+        </el-form-item>
+      </el-form>
     </el-col>
   </el-card>
 </template>
 
 <script>
+// 引入富文本编辑器的样式
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+import { quillEditor } from 'vue-quill-editor'
+
 import ArticleChannel from '@/components/article-channel'
 export default {
   components: {
-    ArticleChannel
+    ArticleChannel,
+    quillEditor
   },
   name: 'AppPublish',
   data () {
@@ -46,7 +58,8 @@ export default {
           images: [] //
         },
         channel_id: '' // 频道ID
-      }
+      },
+      editorOption: {} // 富文本编辑器配置选项
     }
   },
   created () {
@@ -75,6 +88,9 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
-
+<style lang='less' scoped>
+  .quill-editor {
+    height: 500px;
+    margin-bottom: 20px;
+  }
 </style>
