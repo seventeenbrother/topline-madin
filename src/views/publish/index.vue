@@ -63,25 +63,55 @@ export default {
     }
   },
   created () {
-
+    if (this.$route.name === 'publish-edit') {
+      this.loadArticle()
+    }
   },
   methods: {
+    // 发布文章
     async handlePublish (draft) {
       try {
-        await this.$http({
-          url: '/articles',
-          method: 'POST',
-          params: {
-            draft
-          },
-          data: this.form
-        })
-        this.$message({
-          type: 'success',
-          message: '发布成功'
-        })
+        if (this.$route.name === 'publish-edit') {
+          await this.$http({
+            url: `/articles/${this.$route.params.id}`,
+            method: 'PUT',
+            params: {
+              draft
+            },
+            data: this.form
+          })
+          this.$message({
+            type: 'success',
+            message: '发布成功'
+          })
+        } else {
+          await this.$http({
+            url: '/articles',
+            method: 'POST',
+            params: {
+              draft
+            },
+            data: this.form
+          })
+          this.$message({
+            type: 'success',
+            message: '发布成功'
+          })
+        }
       } catch (error) {
-        this.$message.error('发布文章失败', error)
+        this.$message.error('操作失败', error)
+      }
+    },
+    // 修改文章
+    async loadArticle () {
+      try {
+        const article = await this.$http({
+          url: `/articles/${this.$route.params.id}`,
+          method: 'GET'
+        })
+        this.form = article
+      } catch (error) {
+        this.$message.error('获取文章失败')
       }
     }
   }

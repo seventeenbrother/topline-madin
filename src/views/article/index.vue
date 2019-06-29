@@ -86,7 +86,11 @@
             <el-table-column
               label="操作">
               <template slot-scope="scope">
-                <el-button size="small" type='primary' round>修改</el-button>
+                <el-button
+                size="small"
+                type='primary'
+                @click='$router.push(`/publish/${scope.row.id}`)'
+                round>修改</el-button>
               <el-button
               size="small"
               @click='handDelet(scope.row)'
