@@ -14,7 +14,9 @@
             <el-input v-model="form.code" placeholder="请输入验证码"></el-input>
           </el-col>
           <el-col :span="8">
-            <el-button @click="handSendCode" :disabled='!!timer'>{{ timer? `剩余${timerNumber}秒`:'发送验证码'}}</el-button>
+            <el-button
+            :loading='buttLoading'
+            @click="handSendCode" :disabled='!!timer'>{{ timer? `剩余${timerNumber}秒`:'发送验证码'}}</el-button>
           </el-col>
         </el-form-item>
       </el-row>
@@ -24,7 +26,11 @@
       </el-form-item>
       <el-row>
         <el-col :span="24">
-          <el-button class="login" @click='subLogin' v-bind:disabled='!form.agree'>登录</el-button>
+          <el-button
+          class="login"
+          @click='subLogin'
+          v-bind:disabled='!form.agree'
+          :loading='loginLoading'>登录</el-button>
         </el-col>
       </el-row>
     </el-form>
@@ -41,10 +47,12 @@ export default {
   data () {
     return {
       form: {
-        mobile: '18035404256',
-        code: '',
+        mobile: '13911111111',
+        code: '123456',
         agree: ''
       },
+      loginLoading: false,
+      buttLoading: false,
       timer: null,
       timerNumber: timerSeconds,
       rules: {
@@ -77,6 +85,7 @@ export default {
     */
     async yzm () {
       try {
+        this.buttLoading = true
         const mobile = this.form.mobile
         // 请求人机交互初始化参数
         const data = await this.$http({
@@ -95,24 +104,30 @@ export default {
           // 验证码ready之后才能调用verify方法显示验证码
           captchaObj.verify()// 弹出人机交互验证码
         }).onSuccess(async () => {
-          var result = captchaObj.getValidate()
-          // console.log(result)
-          // 验证码正确请求发送短信
-          await this.$http({
-            method: 'GET',
-            url: `/sms/codes/${mobile}`,
-            params: {
-              challenge: result.geetest_challenge,
-              validate: result.geetest_validate,
-              seccode: result.geetest_seccode
-            }
-          })
-          // console.log(res.data)
-          // 发送短信成功后开启倒计时
-          this.djs()
+          try {
+            var result = captchaObj.getValidate()
+            // console.log(result)
+            // 验证码正确请求发送短信
+            await this.$http({
+              method: 'GET',
+              url: `/sms/codes/${mobile}`,
+              params: {
+                challenge: result.geetest_challenge,
+                validate: result.geetest_validate,
+                seccode: result.geetest_seccode
+              }
+            })
+            // console.log(res.data)
+            // 发送短信成功后开启倒计时
+            this.djs()
+          } catch (error) {
+            this.$message.error('获取验证码失败')
+            this.codeLoading = false
+          }
         })
       } catch (err) {
-        console.log(err)
+        this.$message.error('获取验证码失败')
+        this.buttLoading = false
       }
     },
     // 发送短信成功倒计时开启
@@ -138,6 +153,7 @@ export default {
     },
     // 输入验证码之后，点击登录实现跳转
     async handlogin () {
+      this.loginLoading = true
       try {
         const userInfo = await this.$http({
           method: 'POST',
@@ -160,6 +176,7 @@ export default {
       } catch (err) {
         this.$message.error('登录失败，手机号或者验证码错误')
       }
+      this.loginLoading = false
     }
   }
 }

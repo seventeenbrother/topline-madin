@@ -7,12 +7,24 @@ import './styles/index.less'
 import 'nprogress/nprogress.css'
 import axios from 'axios'
 import { getUser, removeUser } from '@/utils/auth'
+import JSONbig from 'json-bigint'
 
 // 引入axios为了配置axios的基础路径，并且将axios挂在到Vue的prototype中
 // 配置基础路径
-axios.defaults.baseURL = 'http://toutiao.course.itcast.cn/mp/v1_0/'
+axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0/'
 // 将axios挂在到Vue的prototype中
 Vue.prototype.$http = axios
+
+// 解决后端返回数据中的数字超出安全整数范围问题
+axios.defaults.transformResponse = [function (data) {
+  try {
+    // 如果是 json 格式字符串，那就转换并返回给后续使用
+    return JSONbig.parse(data)
+  } catch (err) {
+    // 报错就意味着 data 不是 json 格式字符串，这里就直接原样返回给后续使用
+    return data
+  }
+}]
 
 // 请求拦截器：request interceptor
 axios.interceptors.request.use(config => {
