@@ -26,7 +26,7 @@
         <el-menu-item index="1-3">粉丝画像</el-menu-item>
         <el-menu-item index="1-4">粉丝列表</el-menu-item>
     </el-submenu>
-    <el-menu-item index="3">
+    <el-menu-item index="/account">
       <span slot="title">账户信息</span>
     </el-menu-item>
   </el-menu>

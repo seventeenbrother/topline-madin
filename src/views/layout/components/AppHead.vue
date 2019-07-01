@@ -3,7 +3,7 @@
   <el-col :span="10">江苏传智播客教育科技股份有限公司</el-col>
     <el-col :span="5" :offset="5">
       <el-dropdown @command='tchu'>
-        <span class="el-dropdown-link"><img :src='user.photo' width="20px">{{ user.name }}
+        <span class="el-dropdown-link"><img :src='$store.state.user.photo' width="20px">{{ $store.state.user.name }}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
@@ -18,16 +18,16 @@
 </template>
 
 <script>
-import { getUser, removeUser } from '@/utils/auth'
+import { removeUser } from '@/utils/auth'
 export default {
   name: 'AppHead',
   data () {
     return {
-      user: {}
+      // user: {}
     }
   },
   created () {
-    this.user = getUser()
+    // this.user = getUser()
   },
   methods: {
     tchu () {

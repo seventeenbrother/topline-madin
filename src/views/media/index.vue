@@ -14,15 +14,15 @@
         @click.native='loadImg(true)'
         label="收藏"></el-radio-button>
       </el-radio-group>
-      <el-button type="primary">上传图片</el-button>
-      <!-- <el-upload
+      <el-upload
         class="upload-demo"
         :show-file-list='false'
         name='image'
+        :on-success='handsx'
         :headers='{Authorization:`Bearer ${$store.state.user.token}`}'
-        action="http://ttapi.research.itcast.cn/mp/v1_0/user/images">k.
+        action="http://ttapi.research.itcast.cn/mp/v1_0/user/images">
         <el-button size="small" type="primary">点击上传</el-button>
-      </el-upload> -->
+      </el-upload>
     </div>
     <div class="bhh">
       <div class="box"
@@ -67,17 +67,18 @@ export default {
   methods: {
     // 请求展示图片
     async loadImg (collect = false) {
+      console.log(collect)
       try {
         const data = await this.$http({
           url: '/user/images',
           method: 'GET',
-          data: {
+          params: {
             collect,
             page: 1,
             per_page: 10
           }
         })
-        // console.log(data)
+        console.log(data)
         this.img = data.results
       } catch (error) {
         this.$message.error('加载图片出错')
@@ -119,7 +120,16 @@ export default {
       } catch (error) {
         this.message.error('收藏失败')
       }
+    },
+    // 上传图片成功后刷新页面
+    handsx () {
+      this.loadImg()
+      this.$message({
+        type: 'success',
+        message: '图片上传成功'
+      })
     }
+
   }
 }
 </script>
@@ -143,6 +153,7 @@ export default {
   }
   img {
     width: 150px;
+    height: 150px;
     margin-bottom: 8px;
   }
 </style>
